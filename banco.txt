@@ -1,0 +1,319 @@
+## ITEMS
+------------------------------------------------------------------------
+## itm_types
+model itm_types {
+    id              Int       @id @default(autoincrement())
+    state           Int
+    ref_category    Int
+    ref_owner       Int
+    name            String
+    info            String
+    ref_serial      Int
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+}
+
+## itm_fields
+model itm_fields {
+    id          Int       @id @default(autoincrement())
+    type        itm_types @relation(fields: [ref_type], references[id])
+    ref_type    Int
+    label       String
+    position    Int
+    data_type   Int
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+
+## itm_items
+model itm_items {
+    id          Int       @id @default(autoincrement())
+    owner       ???????
+    ref_owner   Int
+    type        itm_types @relation(fields: [ref_type], references:[id])
+    ref_type    Int
+    state       Int
+    name        String
+    serial      String
+    description String
+    value       Double
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+
+## itm_values
+model itm_values {
+    id          Int         @id @default(autoincrement())
+    item        itm_items   @relation(fields:[ref_item], references:[id])
+    ref_item    Int
+    field       itm_fields  @relation(fields:[ref_field], references:[id])
+    ref_field   Int
+    content     String
+    type        Int
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+}
+
+
+## itm_stock
+model itm_stock {
+    id          Int         @id @default(autoincrement())
+    item        itm_items   @relation(fields: [ref_item], references:[id])
+    ref_item    Int 
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+}
+
+## PRODUTOS
+------------------------------------------------------------------------
+## prod_types
+model prod_types {
+    id              Int         @id @default(autoincrement())
+    state           Int
+    ref_category    Int
+    ref_owner       Int
+    name            String
+    info            String
+    ref_serial      Int
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime    @updatedAt
+}
+
+## prod_fields
+model prod_fields{
+    id          Int         @id @default(autoincrement())
+    type        prod_types  @relation(fields:[ref_type], references:[id])
+    ref_type    String
+    label       String
+    postion     Int
+    data_type   Int    
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+}
+
+## prod_products
+model prod_products{
+    id          Int         @id @default(autoincrement())
+    ref_owner   Int
+    ref_type    Int
+    state       Int
+    name        String
+    serial      String
+    description String
+    value       Double
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+}
+
+## prod_values
+model prod_values{
+    id          Int             @id @default(autoincrement())
+    product     prod_products   @relation(fields:[ref_product], references:[id])
+    ref_product Int
+    field       prod_fields     @relation(fields:[ref_field], references:[id])
+    ref_field   Int
+    content     String
+    type        Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## prod_items_to_prod
+model prod_items_to_prod {
+    id          Int             @id @default(autoincrement())
+    item        itm_items       @relation(fields:[ref_item], references:[id])
+    ref_item    Int
+    product     prod_products   @relation(fields:[ref_product], references:[id])
+    ref_product Int
+    quantity    Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## BASE
+------------------------------------------------------------------------
+
+## base_categories
+model base_categories {
+    id          Int             @id @default(autoincrement())
+    ref_owner   Int
+    name        String
+    state       Int
+    ref_module  Int
+    serial      base_serials    @relation(fields:[ref_serial], references:[id])
+    ref_serial  Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## base_serials
+model base_serials {
+    id              Int             @id @default(autoincrement())
+    start_value     Int
+    current_value   Int
+    pattern         String
+    name            String
+    ref_module      Int
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+}
+
+## base_users
+model base_users {
+    id          Int             @id @default(autoincrement())
+    email       String
+    name        String
+    login       String
+    password    String
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## base_groups
+model base_groups {
+    id          Int             @id @default(autoincrement())
+    name        String
+    level       Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## base_users_groups
+model base_users_groups {
+    id          Int             @id @default(autoincrement())
+    user        base_users      @relation(fields:[ref_user], references:[id])
+    ref_user    Int
+    group       base_groups     @relation(fields:[ref_group], references:[id])
+    ref_group   Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## base_permissions
+model base_permissions {
+    id          Int             @id @default(autoincrement())
+    name        String
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## base_group_permissions
+model base_group_permissions {
+    id              Int                 @id @default(autoincrement())
+    group           base_groups         @relation(fields:[ref_group], references:[id])
+    ref_group       Int
+    permission      base_permissions    @relation(fields:[ref_permission], references:[id])
+    ref_permission  Int
+    createdAt       DateTime            @default(now())
+    updatedAt       DateTime            @updatedAt
+}
+
+
+## FORNECEDORES
+------------------------------------------------------------------------
+
+## sup_providers
+model sup_providers {
+    id                  Int                 @id @default(autoincrement())
+    state               Int
+    ref_owner           Int
+    public_name         String
+    info                String
+    uf                  String
+    cep                 String
+    legal_name          String
+    cnpj                String
+    address             String
+    count               String
+    company_owner       String
+    company_owner_cpf   String
+    city                String
+    email               String
+    phone               String
+    createdAt           DateTime            @default(now())
+    updatedAt           DateTime            @updatedAt
+}
+
+## sup_purchases
+model sup_purchases {
+    id          Int             @id @default(autoincrement())
+    item        itm_items   @relation(fields:[ref_item], references:[id])
+    ref_item    Int
+    value       Double
+    quantity    Int
+    date        DateTime
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## sup_purchasing_suppliers
+model sup_purchasing_suppliers {
+    id              Int             @id @default(autoincrement())
+    provider        sup_providers   @relations(fields:[ref_provider], references:[id])
+    ref_provider    Int
+    purchase        sup_purchases   @relations(fields:[ref_purchase], references:[id])
+    ref_purchase    Int
+    total           Double
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+}
+
+## sup_provider_items
+model sup_provider_items {
+    id              Int             @id @default(autoincrement())
+    item            itm_items       @relation(fields:[ref_item], references:[id])
+    ref_item        Int
+    provider        sup_providers   @relation(fields:[ref_provider], references:[id])
+    ref_provider    Int
+    code            String
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+}
+
+## CLIENTES
+------------------------------------------------------------------------
+
+## crm_custumers
+model crm_custumers {
+    id          Int             @id @default(autoincrement())
+    identity    Int
+    ref_owner   Int
+    name        String
+    info        String
+    address     String
+    uf          String
+    email       String
+    phone       String
+    city        String
+    cep         String
+    county      String
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
+
+## crm_requests
+model crm_requests {
+    id              Int             @id @default(autoincrement())
+    custumer        crm_custumers   @relation(fields:[ref_custumer], references:[id])
+    ref_custumer    Int
+    ref_owner       Int
+    value           Double
+    dt_request      DateTime
+    dt_delivery     DateTime
+    delivered       Int
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+}
+
+## crm_products_to_request
+model crm_products_to_request {
+    id          Int             @id @default(autoincrement())
+    request     crm_requests    @relation(fields:[ref_request], references:[id])
+    ref_request Int
+    product     prod_products   @relation(fields:[ref_product], references:[id])
+    ref_product Int
+    value       Double
+    quantity    Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+}
