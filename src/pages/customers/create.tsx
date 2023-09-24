@@ -28,10 +28,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
     "Harris Glenn"
   ];
 
-  const permissionsGroup: string[] = [];
+  const permissionsGroup = [
+    "Humaira Sims",
+    "Santiago Solis",
+    "Dawid Floyd"
+  ];
 
   return {
-    props: { permissions, permissionsGroup }
+    props: { permissions, permissionsGroup },
   };
 };
 

@@ -14,6 +14,7 @@ import { GetServerSideProps } from 'next/types';
 
 //import prisma from 'lib/prisma';
 
+
 export const getServerSideProps: GetServerSideProps = async () => {
   const permissions = [
     "Humaira Sims",
@@ -28,10 +29,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
     "Harris Glenn"
   ];
 
-  const permissionsGroup: string[] = [];
+  const permissionsGroup = [
+    "Humaira Sims",
+    "Santiago Solis",
+    "Dawid Floyd"
+  ];
 
   return {
-    props: { permissions, permissionsGroup }
+    props: { permissions, permissionsGroup },
   };
 };
 
