@@ -14,12 +14,12 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      title: 'Dashboard',
+      title: 'Home',
       icon: HomeOutline,
       path: '/'
     },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Menu'
     },
     {
       title: 'Clientes',
