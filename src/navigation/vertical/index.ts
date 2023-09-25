@@ -34,9 +34,9 @@ const navigation = (): VerticalNavItemsType => {
       openInNewTab: false
     },
     {
-      title: 'Compras Fornecedores',
+      title: 'Compras',
       icon: AccountBoxMultiple,
-      path: '/providers/purchases',
+      path: '/purchases',
       openInNewTab: false
     },
     {
@@ -54,7 +54,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Pedidos',
       icon: Cart,
-      path: '/products',
+      path: '/requests',
       openInNewTab: false
     },
     {
@@ -66,13 +66,13 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Grupos',
       icon: AccountMultiplePlus,
-      path: '/users/groups',
+      path: '/groups',
       openInNewTab: false
     },
     {
       title: 'Permissões',
       icon: AccountMultiplePlus,
-      path: '/users/permissions',
+      path: '/permissions',
       openInNewTab: false
     },
     {
