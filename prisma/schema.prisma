@@ -14,9 +14,7 @@ model itm_types {
     id                  Int                 @id @default(autoincrement())
     state               Int
     ref_category        Int
-    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
     ref_owner           Int
-    user                User                @relation(fields:[ref_owner], references:[id])
     name                String
     info                String
     ref_serial          Int
@@ -27,7 +25,6 @@ model itm_types {
 model itm_fields {
     id          Int             @id @default(autoincrement())
     ref_type    Int
-    type        itm_types       @relation(fields:[ref_type], references:[id])
     label       String
     position    Int
     data_type   Int
@@ -38,9 +35,7 @@ model itm_fields {
 model Item {
     id          Int             @id @default(autoincrement())
     ref_owner   Int
-    user        User            @relation(fields:[ref_owner], references:[id])
     ref_type    Int
-    type        itm_types       @relation(fields:[ref_type], references:[id])
     state       Int
     name        String
     serial      String
@@ -53,9 +48,7 @@ model Item {
 model itm_values {
     id          Int         @id @default(autoincrement())
     ref_item    Int
-    item        Item        @relation(fields:[ref_item], references:[id])
     ref_field   Int
-    field       itm_fields  @relation(fields:[ref_field], references:[id])
     content     String
     type        Int
     createdAt   DateTime    @default(now())
@@ -64,8 +57,7 @@ model itm_values {
 
 model itm_stock {
     id          Int         @id @default(autoincrement())
-    ref_item    Int 
-    item        Item        @relation(fields: [ref_item], references:[id])
+    ref_item    Int
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
 }
@@ -74,13 +66,10 @@ model prod_types {
     id                  Int                 @id @default(autoincrement())
     state               Int
     ref_category        Int
-    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
-    user                User                @relation(fields:[ref_owner], references:[id])
     ref_owner           Int
     name                String
     info                String
     ref_serial          Int
-    base_serials        base_serials        @relation(fields:[ref_serial], references:[id])
     createdAt           DateTime            @default(now())
     updatedAt           DateTime            @updatedAt
 }
@@ -88,7 +77,6 @@ model prod_types {
 model prod_fields {
     id          Int         @id @default(autoincrement())
     ref_type    String
-    type        prod_types  @relation(fields:[ref_type], references:[id])
     label       String
     postion     Int
     data_type   Int    
@@ -99,9 +87,7 @@ model prod_fields {
 model Product {
     id          Int             @id @default(autoincrement())
     ref_owner   Int
-    user        User            @relation(fields:[ref_owner], references:[id])
     ref_type    Int
-    type        prod_types      @relation(fields:[ref_type], references:[id])
     state       Int
     name        String
     serial      String
@@ -114,9 +100,7 @@ model Product {
 model prod_values {
     id          Int             @id @default(autoincrement())
     ref_product Int
-    product     Product         @relation(fields:[ref_product], references:[id])
     ref_field   Int
-    field       prod_fields     @relation(fields:[ref_field], references:[id])
     content     String
     type        Int
     createdAt   DateTime        @default(now())
@@ -126,9 +110,7 @@ model prod_values {
 model prod_items_to_prod {
     id          Int             @id @default(autoincrement())
     ref_item    Int
-    item        Item            @relation(fields:[ref_item], references:[id])
     ref_product Int
-    product     Product         @relation(fields:[ref_product], references:[id])
     quantity    Int
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
@@ -137,12 +119,10 @@ model prod_items_to_prod {
 model base_categories {
     id          Int             @id @default(autoincrement())
     ref_owner   Int
-    user        User            @relation(fields:[ref_owner], references:[id])
     name        String
     state       Int
     ref_module  Int
     ref_serial  Int
-    serial      base_serials    @relation(fields:[ref_serial], references:[id])
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -179,9 +159,7 @@ model Group {
 model base_users_groups {
     id          Int             @id @default(autoincrement())
     ref_user    Int
-    user        User            @relation(fields:[ref_user], references:[id])
     ref_group   Int
-    group       Group           @relation(fields:[ref_group], references:[id])
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -196,9 +174,7 @@ model Permission {
 model base_group_permissions {
     id              Int                 @id @default(autoincrement())
     ref_group       Int
-    group           Group               @relation(fields:[ref_group], references:[id])
     ref_permission  Int
-    permission      Permission          @relation(fields:[ref_permission], references:[id])
     createdAt       DateTime            @default(now())
     updatedAt       DateTime            @updatedAt
 }
@@ -207,7 +183,6 @@ model Provider {
     id                  Int                 @id @default(autoincrement())
     state               Int
     ref_owner           Int
-    user                User                @relation(fields:[ref_owner], references:[id])
     public_name         String
     info                String
     uf                  String
@@ -228,7 +203,6 @@ model Provider {
 model Purchase {
     id          Int             @id @default(autoincrement())
     ref_item    Int
-    item        Item            @relation(fields:[ref_item], references:[id])
     value       Float
     quantity    Int
     date        DateTime
@@ -239,9 +213,7 @@ model Purchase {
 model sup_purchasing_suppliers {
     id              Int             @id @default(autoincrement())
     ref_provider    Int
-    provider        Provider        @relation(fields:[ref_provider], references:[id])
     ref_purchase    Int
-    purchase        Purchase        @relation(fields:[ref_purchase], references:[id])
     total           Float
     createdAt       DateTime        @default(now())
     updatedAt       DateTime        @updatedAt
@@ -250,9 +222,7 @@ model sup_purchasing_suppliers {
 model sup_provider_items {
     id              Int             @id @default(autoincrement())
     ref_item        Int
-    item            Item            @relation(fields:[ref_item], references:[id])
-    ref_provider    Int
-    provider        Provider        @relation(fields:[ref_provider], references:[id])
+    ref_provider    Int   
     code            String
     createdAt       DateTime        @default(now())
     updatedAt       DateTime        @updatedAt
@@ -261,8 +231,7 @@ model sup_provider_items {
 model Custumer {
     id          Int             @id @default(autoincrement())
     identity    Int
-    ref_owner   Int
-    user        User            @relation(fields:[ref_owner], references:[id])
+    ref_owner   Int           
     name        String
     info        String
     address     String
@@ -278,10 +247,8 @@ model Custumer {
 
 model Request {
     id              Int             @id @default(autoincrement())
-    ref_custumer    Int
-    custumer        Custumer        @relation(fields:[ref_custumer], references:[id])
-    ref_owner       Int
-    user            User            @relation(fields:[ref_owner], references:[id])
+    ref_custumer    Int      
+    ref_owner       Int         
     value           Float
     dt_request      DateTime
     dt_delivery     DateTime
@@ -292,10 +259,8 @@ model Request {
 
 model crm_products_to_request {
     id          Int             @id @default(autoincrement())
-    ref_request Int
-    request     Request         @relation(fields:[ref_request], references:[id])
-    ref_product Int
-    product     Product         @relation(fields:[ref_product], references:[id])
+    ref_request Int      
+    ref_product Int    
     value       Float
     quantity    Int
     createdAt   DateTime        @default(now())
