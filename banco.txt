@@ -26,7 +26,7 @@ model itm_fields {
 }
 
 ## itm_items
-model itm_items {
+model Item {
     id          Int       @id @default(autoincrement())
     owner       ???????
     ref_owner   Int
@@ -80,7 +80,7 @@ model prod_types {
 }
 
 ## prod_fields
-model prod_fields{
+model prod_fields {
     id          Int         @id @default(autoincrement())
     type        prod_types  @relation(fields:[ref_type], references:[id])
     ref_type    String
@@ -92,7 +92,7 @@ model prod_fields{
 }
 
 ## prod_products
-model prod_products{
+model Product {
     id          Int         @id @default(autoincrement())
     ref_owner   Int
     ref_type    Int
@@ -106,7 +106,7 @@ model prod_products{
 }
 
 ## prod_values
-model prod_values{
+model prod_values {
     id          Int             @id @default(autoincrement())
     product     prod_products   @relation(fields:[ref_product], references:[id])
     ref_product Int
@@ -159,7 +159,7 @@ model base_serials {
 }
 
 ## base_users
-model base_users {
+model User {
     id          Int             @id @default(autoincrement())
     email       String
     name        String
@@ -170,7 +170,7 @@ model base_users {
 }
 
 ## base_groups
-model base_groups {
+model Group {
     id          Int             @id @default(autoincrement())
     name        String
     level       Int
@@ -190,7 +190,7 @@ model base_users_groups {
 }
 
 ## base_permissions
-model base_permissions {
+model Permission {
     id          Int             @id @default(autoincrement())
     name        String
     createdAt   DateTime        @default(now())
@@ -213,7 +213,7 @@ model base_group_permissions {
 ------------------------------------------------------------------------
 
 ## sup_providers
-model sup_providers {
+model Provider {
     id                  Int                 @id @default(autoincrement())
     state               Int
     ref_owner           Int
@@ -235,7 +235,7 @@ model sup_providers {
 }
 
 ## sup_purchases
-model sup_purchases {
+model Purchase {
     id          Int             @id @default(autoincrement())
     item        itm_items   @relation(fields:[ref_item], references:[id])
     ref_item    Int
@@ -274,7 +274,7 @@ model sup_provider_items {
 ------------------------------------------------------------------------
 
 ## crm_custumers
-model crm_custumers {
+model Custumer {
     id          Int             @id @default(autoincrement())
     identity    Int
     ref_owner   Int
@@ -292,7 +292,7 @@ model crm_custumers {
 }
 
 ## crm_requests
-model crm_requests {
+model Request {
     id              Int             @id @default(autoincrement())
     custumer        crm_custumers   @relation(fields:[ref_custumer], references:[id])
     ref_custumer    Int

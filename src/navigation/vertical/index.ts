@@ -23,43 +23,31 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Clientes',
-      icon: AccountMultiplePlus,
-      path: '/customers',
-      openInNewTab: false
-    },
-    {
-      title: 'Compras Fornecedores',
-      icon: AccountMultiplePlus,
+      icon: AccountGroup,
       path: '/customers',
       openInNewTab: false
     },
     {
       title: 'Fornecedores',
       icon: AccountBoxMultiple,
-      path: '/permissions',
+      path: '/providers',
       openInNewTab: false
     },
     {
-      title: 'Grupos-exemplo',
-      icon: AccountGroup,
-      path: '/groups',
+      title: 'Compras Fornecedores',
+      icon: AccountBoxMultiple,
+      path: '/providers/purchases',
       openInNewTab: false
     },
     {
       title: 'Itens',
-      icon: ArrangeSendToBack,
+      icon: CogOutline,
       path: '/items',
       openInNewTab: false
     },
     {
-      title: 'Permissões-exemplo',
-      icon: AccountMultiplePlus,
-      path: '/permissions',
-      openInNewTab: false
-    },
-    {
       title: 'Produtos',
-      icon: CogOutline,
+      icon: ArrangeSendToBack,
       path: '/products',
       openInNewTab: false
     },
@@ -70,15 +58,27 @@ const navigation = (): VerticalNavItemsType => {
       openInNewTab: false
     },
     {
-      title: 'Relatórios',
-      icon: Finance,
-      path: '/products',
-      openInNewTab: false
-    },
-    {
       title: 'Usuários',
       icon: AccountMultiplePlus,
       path: '/users',
+      openInNewTab: false
+    },
+    {
+      title: 'Grupos',
+      icon: AccountMultiplePlus,
+      path: '/users/groups',
+      openInNewTab: false
+    },
+    {
+      title: 'Permissões',
+      icon: AccountMultiplePlus,
+      path: '/users/permissions',
+      openInNewTab: false
+    },
+    {
+      title: 'Relatórios',
+      icon: Finance,
+      path: '/reports',
       openInNewTab: false
     },
   ]
