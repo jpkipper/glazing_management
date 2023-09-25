@@ -10,6 +10,8 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+// ===========================ITEMS==============================
+
 model itm_types {
     id                  Int                 @id @default(autoincrement())
     state               Int
@@ -61,6 +63,8 @@ model itm_stock {
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
 }
+
+// ===========================PRODUCTS==============================
 
 model prod_types {
     id                  Int                 @id @default(autoincrement())
@@ -116,6 +120,8 @@ model prod_items_to_prod {
     updatedAt   DateTime        @updatedAt
 }
 
+// ===========================BASE==============================
+
 model base_categories {
     id          Int             @id @default(autoincrement())
     ref_owner   Int
@@ -144,6 +150,7 @@ model User {
     name        String
     login       String
     password    String
+    groups      Group[]
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -152,6 +159,8 @@ model Group {
     id          Int             @id @default(autoincrement())
     name        String
     level       Int
+    users       User[]
+    permissions Permission[]
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -167,6 +176,7 @@ model base_users_groups {
 model Permission {
     id          Int             @id @default(autoincrement())
     name        String
+    groups      Group[]
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -178,6 +188,8 @@ model base_group_permissions {
     createdAt       DateTime            @default(now())
     updatedAt       DateTime            @updatedAt
 }
+
+// ===========================PROVIDERS==============================
 
 model Provider {
     id                  Int                 @id @default(autoincrement())
@@ -227,6 +239,8 @@ model sup_provider_items {
     createdAt       DateTime        @default(now())
     updatedAt       DateTime        @updatedAt
 }
+
+// ===========================CUSTOMERS==============================
 
 model Custumer {
     id          Int             @id @default(autoincrement())

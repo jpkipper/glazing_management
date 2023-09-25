@@ -1,28 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `_GroupToPermission` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `_GroupToUser` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "_GroupToPermission" DROP CONSTRAINT "_GroupToPermission_A_fkey";
-
--- DropForeignKey
-ALTER TABLE "_GroupToPermission" DROP CONSTRAINT "_GroupToPermission_B_fkey";
-
--- DropForeignKey
-ALTER TABLE "_GroupToUser" DROP CONSTRAINT "_GroupToUser_A_fkey";
-
--- DropForeignKey
-ALTER TABLE "_GroupToUser" DROP CONSTRAINT "_GroupToUser_B_fkey";
-
--- DropTable
-DROP TABLE "_GroupToPermission";
-
--- DropTable
-DROP TABLE "_GroupToUser";
-
 -- CreateTable
 CREATE TABLE "itm_types" (
     "id" SERIAL NOT NULL,
@@ -188,6 +163,30 @@ CREATE TABLE "base_serials" (
 );
 
 -- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "login" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Group" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "level" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Group_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "base_users_groups" (
     "id" SERIAL NOT NULL,
     "ref_user" INTEGER NOT NULL,
@@ -196,6 +195,16 @@ CREATE TABLE "base_users_groups" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "base_users_groups_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Permission" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Permission_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -317,3 +326,39 @@ CREATE TABLE "crm_products_to_request" (
 
     CONSTRAINT "crm_products_to_request_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "_GroupToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_GroupToPermission" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_GroupToUser_AB_unique" ON "_GroupToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_GroupToUser_B_index" ON "_GroupToUser"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_GroupToPermission_AB_unique" ON "_GroupToPermission"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_GroupToPermission_B_index" ON "_GroupToPermission"("B");
+
+-- AddForeignKey
+ALTER TABLE "_GroupToUser" ADD CONSTRAINT "_GroupToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_GroupToUser" ADD CONSTRAINT "_GroupToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_GroupToPermission" ADD CONSTRAINT "_GroupToPermission_A_fkey" FOREIGN KEY ("A") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_GroupToPermission" ADD CONSTRAINT "_GroupToPermission_B_fkey" FOREIGN KEY ("B") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
