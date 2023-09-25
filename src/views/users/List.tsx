@@ -10,8 +10,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import Link from 'next/dist/client/link'
-import link from 'next/link'
+import { User } from '@prisma/client'
 
 interface Column {
   id: 'name' | 'login' | 'email'
@@ -33,19 +32,24 @@ interface Data {
   email: string
 }
 
-function createData(name: string, login: string, email: string): Data {
+type Props = {
+  users: User[];
+}
 
+function createData(name: string, login: string, email: string): Data {
   return { name, login, email }
 }
 
-const rows = [
-  createData('Mateus Schmitz', 'mateus.schmitz', 'mateus.schmitz@universo.univates.br')
-]
-
-const TableStickyHeader = () => {
+const UsersTable: React.FC<Props> = (props) => {
   // ** States
-  const [page, setPage] = useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+
+  const rows: Data[] = [];
+
+  props.users.forEach(user => {
+    rows.push(createData(user.name, user.login, user.email));
+  });
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -72,7 +76,7 @@ const TableStickyHeader = () => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={row.login} component={'Link' as link} to={`/user`}>
+                <TableRow hover role='checkbox' tabIndex={-1} key={row.login}>
                   {columns.map(column => {
                     const value = row[column.id]
 
@@ -101,4 +105,4 @@ const TableStickyHeader = () => {
   )
 }
 
-export default TableStickyHeader
+export default UsersTable

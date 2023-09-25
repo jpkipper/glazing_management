@@ -5,48 +5,43 @@ import Grid from '@mui/material/Grid'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
 // ** Demo Components Imports
-import FormGroups from 'src/views/groups/Form'
+import UserForm from 'src/views/users/Form'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { GetServerSideProps } from 'next/types';
 
-import React from 'react';
-import Router from 'next/router';
-
-//import { useSession } from 'next-auth/react';
 import prisma from 'lib/prisma';
+import { Group, User } from '@prisma/client';
 
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const groups = await prisma.group.findMany();
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const permissions = [
-    "Humaira Sims",
-    "Santiago Solis",
-    "Dawid Floyd",
-    "Mateo Barlow",
-    "Samia Navarro",
-    "Kaden Fields",
-    "Genevieve Watkins",
-    "Mariah Hickman",
-    "Rocco Richardson",
-    "Harris Glenn"
-  ];
+  const user   = await prisma.user.findUnique({
+    where: {
+      id: Number(params?.id),
+    },
+    include: {
+      groups: true
+    }
+  });
 
-  const permissionsGroup = [
-    "Humaira Sims",
-    "Santiago Solis",
-    "Dawid Floyd"
-  ];
+  const userGroups = user ?.groups.map(group => group.id) || [];
 
   return {
-    props: { permissions, permissionsGroup },
+    props: {
+      user: JSON.parse(JSON.stringify(user)), 
+      groups: groups, 
+      userGroups: userGroups
+      }
   };
 };
 
 type Props = {
-  permissions: string[];
-  permissionsGroup: string[];
+  user: User;
+  groups: Group[];
+  userGroups: number[];
 }
 
 const FormLayouts: React.FC<Props> = (props) => {
@@ -54,7 +49,7 @@ const FormLayouts: React.FC<Props> = (props) => {
     <DatePickerWrapper>
       <Grid container >
         <Grid item xs={12}>
-          <FormGroups permissions={props.permissions} permissionsGroup={props.permissionsGroup}/>
+          <UserForm user={props.user} groups={props.groups} userGroups={props.userGroups}/>
         </Grid>
       </Grid>
     </DatePickerWrapper>
