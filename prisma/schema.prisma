@@ -13,10 +13,10 @@ datasource db {
 model itm_types {
     id                  Int                 @id @default(autoincrement())
     state               Int
-    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
     ref_category        Int
-    user                User                @relation(fields:[ref_owner], references:[id])
+    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
     ref_owner           Int
+    user                User                @relation(fields:[ref_owner], references:[id])
     name                String
     info                String
     ref_serial          Int
@@ -26,8 +26,8 @@ model itm_types {
 
 model itm_fields {
     id          Int             @id @default(autoincrement())
-    type        itm_types       @relation(fields:[ref_type], references:[id])
     ref_type    Int
+    type        itm_types       @relation(fields:[ref_type], references:[id])
     label       String
     position    Int
     data_type   Int
@@ -37,10 +37,10 @@ model itm_fields {
 
 model Item {
     id          Int             @id @default(autoincrement())
-    user        User            @relation(fields:[ref_owner], references:[id])
     ref_owner   Int
-    type        itm_types       @relation(fields:[ref_type], references:[id])
+    user        User            @relation(fields:[ref_owner], references:[id])
     ref_type    Int
+    type        itm_types       @relation(fields:[ref_type], references:[id])
     state       Int
     name        String
     serial      String
@@ -52,10 +52,10 @@ model Item {
 
 model itm_values {
     id          Int         @id @default(autoincrement())
-    item        Item        @relation(fields:[ref_item], references:[id])
     ref_item    Int
-    field       itm_fields  @relation(fields:[ref_field], references:[id])
+    item        Item        @relation(fields:[ref_item], references:[id])
     ref_field   Int
+    field       itm_fields  @relation(fields:[ref_field], references:[id])
     content     String
     type        Int
     createdAt   DateTime    @default(now())
@@ -64,8 +64,8 @@ model itm_values {
 
 model itm_stock {
     id          Int         @id @default(autoincrement())
-    item        Item        @relation(fields: [ref_item], references:[id])
     ref_item    Int 
+    item        Item        @relation(fields: [ref_item], references:[id])
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
 }
@@ -73,22 +73,22 @@ model itm_stock {
 model prod_types {
     id                  Int                 @id @default(autoincrement())
     state               Int
-    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
     ref_category        Int
+    base_categories     base_categories     @relation(fields:[ref_category], references:[id])
     user                User                @relation(fields:[ref_owner], references:[id])
     ref_owner           Int
     name                String
     info                String
-    base_serials        base_serials        @relation(fields:[ref_serial], references:[id])
     ref_serial          Int
+    base_serials        base_serials        @relation(fields:[ref_serial], references:[id])
     createdAt           DateTime            @default(now())
     updatedAt           DateTime            @updatedAt
 }
 
 model prod_fields {
     id          Int         @id @default(autoincrement())
-    type        prod_types  @relation(fields:[ref_type], references:[id])
     ref_type    String
+    type        prod_types  @relation(fields:[ref_type], references:[id])
     label       String
     postion     Int
     data_type   Int    
@@ -98,10 +98,10 @@ model prod_fields {
 
 model Product {
     id          Int             @id @default(autoincrement())
-    user        User            @relation(fields:[ref_owner], references:[id])
     ref_owner   Int
-    type        prod_types      @relation(fields:[ref_type], references:[id])
+    user        User            @relation(fields:[ref_owner], references:[id])
     ref_type    Int
+    type        prod_types      @relation(fields:[ref_type], references:[id])
     state       Int
     name        String
     serial      String
@@ -113,10 +113,10 @@ model Product {
 
 model prod_values {
     id          Int             @id @default(autoincrement())
-    product     Product         @relation(fields:[ref_product], references:[id])
     ref_product Int
-    field       prod_fields     @relation(fields:[ref_field], references:[id])
+    product     Product         @relation(fields:[ref_product], references:[id])
     ref_field   Int
+    field       prod_fields     @relation(fields:[ref_field], references:[id])
     content     String
     type        Int
     createdAt   DateTime        @default(now())
@@ -125,10 +125,10 @@ model prod_values {
 
 model prod_items_to_prod {
     id          Int             @id @default(autoincrement())
-    item        Item            @relation(fields:[ref_item], references:[id])
     ref_item    Int
-    product     Product         @relation(fields:[ref_product], references:[id])
+    item        Item            @relation(fields:[ref_item], references:[id])
     ref_product Int
+    product     Product         @relation(fields:[ref_product], references:[id])
     quantity    Int
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
@@ -136,13 +136,13 @@ model prod_items_to_prod {
 
 model base_categories {
     id          Int             @id @default(autoincrement())
-    user        User            @relation(fields:[ref_owner], references:[id])
     ref_owner   Int
+    user        User            @relation(fields:[ref_owner], references:[id])
     name        String
     state       Int
     ref_module  Int
-    serial      base_serials    @relation(fields:[ref_serial], references:[id])
     ref_serial  Int
+    serial      base_serials    @relation(fields:[ref_serial], references:[id])
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
@@ -178,10 +178,10 @@ model Group {
 
 model base_users_groups {
     id          Int             @id @default(autoincrement())
-    user        User            @relation(fields:[ref_user], references:[id])
     ref_user    Int
-    group       Group           @relation(fields:[ref_group], references:[id])
+    user        User            @relation(fields:[ref_user], references:[id])
     ref_group   Int
+    group       Group           @relation(fields:[ref_group], references:[id])
     createdAt   DateTime        @default(now())
     updatedAt   DateTime        @updatedAt
 }
